@@ -15,6 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
+
+workbox.core.setCacheNameDetails({
+  prefix: 'my-app',
+  suffix: 'v1',
+  precache: 'precache-cache',
+  runtime: 'runtime-cache'
+});
+
+workbox.precaching.precacheAndRoute([
+  "/offline.html",// Archivo html que muestra mensaje de falta de conexión
+])
+
 "use strict";
 
 // CODELAB: Update cache names any time any of the cached files change.
