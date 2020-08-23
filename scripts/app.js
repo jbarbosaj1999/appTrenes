@@ -10,6 +10,20 @@
         container: document.querySelector('.main'),
         addDialog: document.querySelector('.dialog-container')
     };
+    
+    var bd;
+    var solicitud=indexedDB.open("mibase");
+    solicitud.onsuccess=function(e){
+      
+        bd=e.target.result;
+    }
+  
+    solicitud.onupgradeneeded=function(e)
+    {
+      bd=e.target.result;
+      bd.createObjectStore("estaciones", {keyPath: "key"});
+    }   
+    
 
 
     /*****************************************************************************
@@ -39,7 +53,10 @@
             app.selectedTimetables = [];
         }
         app.getSchedule(key, label);
-        app.selectedTimetables.push({key: key, label: label});
+        var transaccion=bd.transaction(["estaciones"], "readwrite");
+        var almacen = transaccion.objectStore("estaciones");
+        var agregar = almacen.add({key:key, label:label})
+        //app.selectedTimetables.push({key: key, label: label});
         app.toggleAddDialog(false);
     });
 
@@ -127,7 +144,7 @@
                 }
             } else {
                 // Return the initial weather forecast since no data is available.
-                app.updateTimetableCard(initialStationTimetable);
+               // app.updateTimetableCard(initialStationTimetable);
             }
         };
         request.open('GET', url);
@@ -155,7 +172,7 @@
         created: '2017-07-18T17:08:42+02:00',
         schedules: [
             {
-                message: '0 mn'
+                message: '1000 mn'
             },
             {
                 message: '2 mn'
@@ -180,8 +197,9 @@
      *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
      ************************************************************************/
 
-    app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-    app.selectedTimetables = [
-        {key: initialStationTimetable.key, label: initialStationTimetable.label}
-    ];
+ /*   app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+        *    app.selectedTimetables = [
+  *     {key: initialStationTimetable.key, label: initialStationTimetable.label}
+  *  ];
+  */
 })();
