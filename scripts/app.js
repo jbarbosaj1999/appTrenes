@@ -10,6 +10,19 @@
         container: document.querySelector('.main'),
         addDialog: document.querySelector('.dialog-container')
     };
+    
+    var bd;
+    var solicitud=indexedDB.open("mibase");
+    solicitud.onsuccess=function(e){
+      
+        bd=e.target.result;
+    }
+  
+    solicitud.onupgradeneeded=function(e)
+    {
+      bd.createObjectStore("estaciones", {keyPath: "nombre"});
+    }   
+    
 
 
     /*****************************************************************************
@@ -155,7 +168,7 @@
         created: '2017-07-18T17:08:42+02:00',
         schedules: [
             {
-                message: '0 mn'
+                message: '1000 mn'
             },
             {
                 message: '2 mn'
