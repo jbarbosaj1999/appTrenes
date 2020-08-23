@@ -2,7 +2,7 @@
   "name": "trenes",
   "short_name": "trenes",
   "icons": [{    
-      "src": "/images/iconos/subway512x512.png",
+      "src": "/images/iconos/subway512X512.png",
       "sizes": "512x512",
       "type": "image/png"
     }],

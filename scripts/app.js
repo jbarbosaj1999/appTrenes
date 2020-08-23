@@ -20,7 +20,8 @@
   
     solicitud.onupgradeneeded=function(e)
     {
-      bd.createObjectStore("estaciones", {keyPath: "nombre"});
+      bd=e.target.result;
+      bd.createObjectStore("estaciones", {keyPath: "key"});
     }   
     
 
@@ -52,7 +53,10 @@
             app.selectedTimetables = [];
         }
         app.getSchedule(key, label);
-        app.selectedTimetables.push({key: key, label: label});
+        var transaccion=bd.transaction(["estaciones"], "readwrite");
+        var almacen = transaccion.objectStore("estaciones");
+        var agregar = almacen.add({key:key, label:label})
+        //app.selectedTimetables.push({key: key, label: label});
         app.toggleAddDialog(false);
     });
 
@@ -140,7 +144,7 @@
                 }
             } else {
                 // Return the initial weather forecast since no data is available.
-                app.updateTimetableCard(initialStationTimetable);
+               // app.updateTimetableCard(initialStationTimetable);
             }
         };
         request.open('GET', url);
@@ -193,8 +197,9 @@
      *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
      ************************************************************************/
 
-    app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-    app.selectedTimetables = [
-        {key: initialStationTimetable.key, label: initialStationTimetable.label}
-    ];
+ /*   app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+        *    app.selectedTimetables = [
+  *     {key: initialStationTimetable.key, label: initialStationTimetable.label}
+  *  ];
+  */
 })();
