@@ -121,6 +121,7 @@
     }
 
     if (app.isLoading) {
+      window.cardLoadTime = performance.now();
       app.spinner.setAttribute("hidden", true);
       app.container.removeAttribute("hidden");
       app.isLoading = false;
@@ -135,8 +136,8 @@
 
   app.getSchedule = function(key, label) {
     var url = "https://api-ratp.pierre-grimaud.fr/v3/schedules/" + key;
-
-    var request = new XMLHttpRequest();
+    var request = new XMLHttpRequest();   
+    var inicio = performance.now();
     request.onreadystatechange = function() {
       if (request.readyState === XMLHttpRequest.DONE) {
         if (request.status === 200) {
@@ -147,10 +148,14 @@
           result.created = response._metadata.date;
           result.schedules = response.result.schedules;
           app.updateTimetableCard(result);
+          var final = performance.now();   
+          window.apiRequest = final - inicio;
         }
       } else {
         // Return the initial weather forecast since no data is available.
-        //app.updateTimetableCard(initialStationTimetable);
+        app.updateTimetableCard(initialStationTimetable);
+         var final = performance.now();    
+         window.apiRequest = final - inicio;
       }
     };
     request.open("GET", url);
@@ -199,9 +204,8 @@
    *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
    ************************************************************************/
 
-  /*   app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-   *    app.selectedTimetables = [
-           *     {key: initialStationTimetable.key, label: initialStationTimetable.label}
-   *  ];
-   */
+  app.getSchedule("metros/1/bastille/A", "Bastille, Direction La Défense");
+  app.selectedTimetables = [
+    { key: initialStationTimetable.key, label: initialStationTimetable.label }
+  ];
 })();

@@ -1,11 +1,13 @@
 {
   "name": "trenes",
   "short_name": "trenes",
-  "icons": [{    
+  "icons": [
+    {
       "src": "/images/iconos/subway512X512.png",
       "sizes": "512x512",
       "type": "image/png"
-    }],
+    }
+  ],
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ececec",
